@@ -1,0 +1,2 @@
+id,name,model_id/model,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_twc_mrp_bom_import_wizard,twc.mrp.bom.import.wizard,twc.mrp.bom.import.wizard,mrp.group_mrp_manager,1,1,1,1

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_mrp_bom_import_wizard_form" model="ir.ui.view">
+        <field name="name">twc.mrp.bom.import.wizard.form</field>
+        <field name="model">twc.mrp.bom.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import de nomenclatures">
+
+                <div class="alert alert-info" invisible="state == 'done'">
+                    Importer le fichier Excel de nomenclatures
+                    (feuilles <b>Partenaires</b>, <b>Produits finis</b> et <b>Nomenclatures</b>).
+                    Les produits, partenaires et BOMs existants ne seront pas modifiés.
+                </div>
+
+                <group invisible="state == 'done'">
+                    <field name="file_data" filename="file_name" widget="binary"/>
+                    <field name="file_name" invisible="1"/>
+                </group>
+
+                <group invisible="state != 'done'">
+                    <field name="result_log" widget="text" readonly="1"
+                           style="font-family: monospace; font-size: 12px;"/>
+                </group>
+
+                <footer>
+                    <button name="action_import" type="object" string="Importer"
+                            class="btn-primary"
+                            invisible="state == 'done'"/>
+                    <button string="Fermer" class="btn-secondary" special="cancel"/>
+                </footer>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mrp_bom_import_wizard" model="ir.actions.act_window">
+        <field name="name">Importer des nomenclatures</field>
+        <field name="res_model">twc.mrp.bom.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+        id="menu_mrp_bom_import"
+        name="Importer des nomenclatures"
+        parent="mrp.menu_mrp_bom"
+        action="action_mrp_bom_import_wizard"
+        sequence="99"/>
+
+</odoo>
