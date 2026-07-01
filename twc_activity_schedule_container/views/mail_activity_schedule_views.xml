@@ -1,0 +1,45 @@
+<odoo>
+    <!-- Add subtype_ids to the activity type configuration form -->
+    <record id="twc_mail_activity_type_view_form_inherit" model="ir.ui.view">
+        <field name="name">mail.activity.type.view.form.subtypes</field>
+        <field name="model">mail.activity.type</field>
+        <field name="inherit_id" ref="mail.mail_activity_type_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="Sous types d'activité">
+                    <field name="subtype_ids" widget="many2many_tags" nolabel="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inject subtype selector into the schedule activity wizard -->
+    <record id="twc_mail_activity_schedule_view_form_inherit" model="ir.ui.view">
+        <field name="name">mail.activity.schedule.view.form.container</field>
+        <field name="model">mail.activity.schedule</field>
+        <field name="inherit_id" ref="mail.mail_activity_schedule_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Exclude subtypes from the main activity type picker -->
+            <xpath expr="//field[@name='activity_type_id'][@widget='selection_badge_icons']" position="attributes">
+                <attribute name="domain">[('is_subtype', '=', False), '|', ('res_model', '=', False), ('res_model', '=', res_model)]</attribute>
+            </xpath>
+
+            <!-- Inject the subtype selector after the activity type field -->
+            <xpath expr="//field[@name='activity_type_id'][@widget='selection_badge_icons']" position="after">
+                <field name="available_subtype_ids" invisible="1"/>
+                <field name="is_container_type" invisible="1"/>
+                <separator string="Sous activités" invisible="not is_container_type"/>
+                <group invisible="not is_container_type">
+                    <field
+                        name="activity_subtype_id"
+                        string="Sous type d'activité"
+                        widget="selection_badge_icons"
+                        iconField="icon"
+                        domain="[('id', 'in', available_subtype_ids)]"
+                        nolabel="1"
+                    />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
